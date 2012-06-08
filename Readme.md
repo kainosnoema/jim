@@ -16,23 +16,26 @@ Install server
     $ jim install ./jim
     $ cd jim
 
-Add a webhook script
+Add a webhook with a shell command
 
-    $ jim add deploy_project ~/project/deploy.sh
+    $ jim add deploy-project -c "echo 'Prepare to die, Peter Pan!'"
 
-Run a hook
+  ... or from an existing script
 
-    $ jim run deploy_project
+    $ jim add deploy-project ~/project/deploy.sh
 
-Start the server in the background
+Run the hook directly
+
+    $ jim run deploy-project
+
+Start the webserver
 
     $ jim server -p 8080 &
 
-Trigger the web hook remotely with env vars
+Trigger the hook remotely with env vars
 
-    curl -d "branch=staging" http://localhost:8080/hooks/deploy_project
-
-    # deploy.sh script is run with `JIM_BRANCH=staging`
+    curl -d "branch=staging" http://localhost:8080/hooks/deploy-project
+    # hook script is run with `JIM_BRANCH=staging`
 
 ## Features
 
@@ -42,6 +45,11 @@ So far:
   - HTTP API
 
 (in development)
+
+## Todo
+
+  - Authentication
+  - Tests
 
 ## License
 
