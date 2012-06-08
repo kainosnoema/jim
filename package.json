@@ -1,7 +1,7 @@
 {
   "name": "jim",
   "description": "Simple webhook server",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "author": "Evan Owen <kainosnoema@gmail.com>",
   "contributors": [
   ],
