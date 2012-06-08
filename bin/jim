@@ -1,0 +1,132 @@
+#!/usr/bin/env node
+
+/**
+ * Module dependencies.
+ */
+
+var Jim = require('../lib/jim')
+  , helper = require('../lib/helper')
+  , pkg = require('../package.json')
+  , program = require('commander')
+  , path = require('path');
+
+/**
+ * Define cli program.
+ */
+
+program
+  .version(pkg.version)
+  .option('-p --path [path]', 'set the working path for given command')
+  .on('path', function(workingPath) {
+    process.chdir(path.resolve(workingPath));
+  });
+
+program
+  .command('install [path]')
+  .description('Install Jim server at the given path ')
+  .action(function(installDir, options){
+    var jim = new Jim({ workingPath: path.resolve(installDir || '.') });
+
+    if (jim.installed()) {
+      abort('Jim already installed. For help, try `jim --help`.');
+    }
+
+    jim.install();
+  });
+
+program
+  .command('add <name> <script-file>')
+  .description('Add a hook with the given name and bash script file')
+  .action(function(name, script, options) {
+    var jim = new Jim();
+
+    try {
+      jim.add(name, { script: script });
+    } catch(err) {
+      abort(err.message);
+    }
+  });
+
+program
+  .command('remove <name>')
+  .description('Remove the hook with the given name')
+  .action(function(name, options) {
+    var jim = new Jim()
+      , hook;
+
+    try {
+      hook = jim.hook(name);
+    } catch(err) {
+      abort(err.message);
+    }
+
+    if (!hook.exists()) {
+      abort('Hook "' + hook.name + '" doesn\'t exist.')
+    }
+
+    program.confirm('Really remove ' + hook.name + '? (yes or no)', function(really) {
+      process.stdin.destroy();
+      if (!really) { return; }
+
+      try {
+        jim.remove(hook);
+      } catch(err) {
+        abort(err.message);
+      }
+    }, true);
+  });
+
+program
+  .command('run <hook>')
+  .description('Run the script for hook with the given name')
+  .action(function(name, options){
+    var jim = new Jim();
+
+    try {
+      var hook = jim.hook(name);
+      hook.run(function(err) {
+        if(err) { abort(err); }
+      });
+    } catch(err) {
+      abort(err.message);
+    }
+  });
+
+program
+  .command('server')
+  .description('Start the hook server')
+  .option('-p, --port [number]', 'Start at the given port', '8080')
+  .action(function(options) {
+    var jim = new Jim();
+    if (!jim.installed()) {
+      abort('Jim isn\'t installed at this path. ' +
+            'Install Jim, or use --path to specify it\'s path.');
+    }
+
+    var server = require('../lib/server')
+      , port = options.port || 8080;
+
+    server.listen(port).on('listening', function(){
+      helper.log('listening on port ' + port, 'server');
+    });
+  });
+
+/**
+ * Parse argv using defined program commands.
+ */
+
+program.parse(process.argv);
+
+if (!program.args.length) {
+  console.log(program.helpInformation());
+}
+
+/**
+ * Log given error `str` and exit.
+ *
+ */
+
+function abort(str) {
+  helper.log(str, 'error');
+  process.exit(1);
+}

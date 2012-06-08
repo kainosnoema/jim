@@ -1,0 +1,29 @@
+{
+  "name": "jim",
+  "description": "Simple webhook server",
+  "version": "0.0.1",
+  "author": "Evan Owen <kainosnoema@gmail.com>",
+  "contributors": [
+  ],
+  "dependencies": {
+    "connect": "2.0.x",
+    "commander": "0.6.1",
+    "fs-extra": "0.1.x",
+    "mkdirp": "0.3.x",
+    "rimraf": "2.0.x",
+    "debug": "*"
+  },
+  "devDependencies": {
+    "mocha": "*"
+  },
+  "publishConfig": {},
+  "keywords": ["jim", "webhook", "hook", "server"],
+  "repository": "git://github.com/kainosnoema/jim",
+  "main": "index",
+  "bin": { "jim": "./bin/jim" },
+  "scripts": {
+    "prepublish" : "npm prune",
+    "test": "make test"
+  },
+  "engines": { "node": "*" }
+}
