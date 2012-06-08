@@ -34,7 +34,7 @@ Start the webserver
 
 Trigger the hook remotely with env vars
 
-    curl -d "branch=staging" http://localhost:8080/hooks/deploy-project
+    curl -X POST http://localhost:8080/hooks/deploy-project?branch=staging
     # hook script is run with `JIM_BRANCH=staging`
 
 ## Features
