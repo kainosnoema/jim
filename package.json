@@ -10,7 +10,6 @@
     "commander": "0.6.1",
     "fs-extra": "0.1.x",
     "mkdirp": "0.3.x",
-    "rimraf": "2.0.x",
     "debug": "*"
   },
   "devDependencies": {
