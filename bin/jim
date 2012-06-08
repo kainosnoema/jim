@@ -78,6 +78,17 @@ program
   });
 
 program
+  .command('list')
+  .description('List all available hooks')
+  .action(function(options){
+    var jim = new Jim();
+
+    jim.hooks.forEach(function(hook) {
+      console.log(hook.name, ' -> ', hook.scriptPath);
+    });
+  });
+
+program
   .command('run <hook>')
   .description('Run the script for hook with the given name')
   .action(function(name, options){
