@@ -83,8 +83,7 @@ program
     var jim = new Jim();
 
     try {
-      var hook = jim.hook(name);
-      hook.run(function(err) {
+      jim.run(name, null, function(err) {
         if(err) { abort(err); }
       });
     } catch(err) {
