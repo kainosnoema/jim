@@ -16,9 +16,9 @@ var Jim = require('../lib/jim')
 
 program
   .version(pkg.version)
-  .option('-p --path [path]', 'set the working path for given command')
-  .on('path', function(workingPath) {
-    process.chdir(path.resolve(workingPath));
+  .option('-d --dir [path]', 'set the working directory for given command')
+  .on('dir', function(workingDir) {
+    process.chdir(path.resolve(workingDir));
   });
 
 program
@@ -35,7 +35,7 @@ program
   });
 
 program
-  .command('add <name> <script-file>')
+  .command('add <name> <bash-script>')
   .description('Add a hook with the given name and bash script file')
   .action(function(name, script, options) {
     var jim = new Jim();
