@@ -6,6 +6,7 @@
   "contributors": [
   ],
   "dependencies": {
+    "dateformat": "1.0.2-1.2.3",
     "connect": "2.0.x",
     "commander": "0.6.1",
     "fs-extra": "0.1.x",
