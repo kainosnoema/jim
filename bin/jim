@@ -37,12 +37,14 @@ program
 program
   .command('add <name> [bash-script]')
   .description('Add a hook with the given name and bash script file')
-  .option('-c --command [shell]', 'shell command to run instead of script file')
+  .option('-c --cmd [shell]', 'shell command to run instead of script file')
   .action(function(name, script, options) {
     var jim = new Jim();
 
     try {
-      jim.add(name, { script: script, command: options.command });
+      jim.add(name, { script: script, command: options.cmd }, function(err) {
+        if(err) { abort(err.message); }
+      });
     } catch(err) {
       abort(err.message);
     }
@@ -96,7 +98,7 @@ program
 
     try {
       jim.run(name, null, function(err) {
-        if(err) { abort(err); }
+        if(err) { abort(err.message); }
       });
     } catch(err) {
       abort(err.message);
